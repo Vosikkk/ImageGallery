@@ -75,6 +75,7 @@
                                         <constraint firstItem="Z3G-3q-lzC" firstAttribute="centerX" secondItem="JC5-la-dKW" secondAttribute="centerX" id="mew-bg-gtx"/>
                                     </constraints>
                                 </collectionViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </collectionViewCell>
                         </cells>
                         <connections>

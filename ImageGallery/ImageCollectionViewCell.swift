@@ -17,6 +17,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
         didSet { updateUI() }
     }
     
+    var changeAspectRatio: (() -> Void)?
+    
     private func updateUI() {
         if let url = imageURL {
             imageGallery.image = nil
@@ -26,6 +28,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     if let imageData = urlContents, url == self.imageURL, let image = UIImage(data: imageData) {
                         self.imageGallery.image = image
+                    } else {
+                        self.imageGallery.image = "Error 😡".emojiToImage()?.applyBlurEffect()
+                        self.changeAspectRatio?()
                     }
                     self.spinner?.stopAnimating()
                 }

@@ -27,8 +27,8 @@ extension URL {
         }
     }
 }
-extension UIImage
-{
+extension UIImage {
+    
     private static let localImagesDirectory = "UIImage.storeLocallyAsJPEG"
     
     static func urlToStoreLocallyAsJPEG(named: String) -> URL? {
@@ -69,5 +69,31 @@ extension UIImage
             }
             return nil
         }
+    
+    func applyBlurEffect() -> UIImage {
+        let imageToBlur = CIImage(image: self)
+        let filter = CIFilter(name: "CIGaussianBlur")
+        filter?.setValue(imageToBlur, forKey: "inputImage")
+        filter?.setValue(5, forKey: "inputRadius")
+        let resultOfImage = filter?.value(forKey: "outputImage") as? CIImage
+        let blurredImage = UIImage(ciImage: resultOfImage!)
+        return blurredImage
     }
+    
+}
 
+
+extension String {
+    
+    func emojiToImage() -> UIImage? {
+        let size = CGSize(width: 160, height: 160)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        #colorLiteral(red: 0.7368795971, green: 0.9366820587, blue: 0.9764705896, alpha: 0.7592037671).set()
+        let rect = CGRect(origin: CGPoint(), size: size)
+        UIRectFill(CGRect(origin: CGPoint(), size: size))
+        (self as NSString).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: 30)])
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+}

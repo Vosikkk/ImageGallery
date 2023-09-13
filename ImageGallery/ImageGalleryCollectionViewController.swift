@@ -40,13 +40,9 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageCollection = [
-            ImageModel(url:URL(string:"https://h5p.org/sites/default/files/h5p/content/1209180/images/file-6113d5f8845dc.jpeg")!, aspectRatio: 0.76),
-            ImageModel(url: URL(string: "https://miro.medium.com/v2/resize:fit:1400/1*YMJDp-kqus7i-ktWtksNjg.jpeg")!, aspectRatio: 0.76)
-        ]
-        
         collectionView?.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(zoom)))
         collectionView.dropDelegate = self
+        collectionView.dragDelegate = self
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -59,7 +55,15 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
             gesture.scale = 1.0
         }
     }
-    
+    private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
+        if let itemCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell, let image = itemCell.imageGallery.image {
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: image))
+            dragItem.localObject = imageCollection[indexPath.item]
+            return [dragItem]
+        } else {
+            return []
+        }
+    }
     
     // MARK: - Navigation
 
@@ -93,6 +97,12 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Image Cell", for: indexPath)
         if let imageCell = cell as? ImageCollectionViewCell {
+            imageCell.changeAspectRatio = { [weak self] in
+                if let aspectRatio = self?.imageCollection[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
+                    self?.imageCollection[indexPath.item].aspectRatio = 1.0
+                    self?.flowLayout?.invalidateLayout()
+                }
+            }
             imageCell.imageURL = imageCollection[indexPath.item].url
         }
     
@@ -108,6 +118,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
 extension ImageGalleryCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // Make each image with the same width
         let width = predefinedWidth
         let aspectRatio = CGFloat(imageCollection[indexPath.item].aspectRatio)
         return CGSize(width: width, height: width / aspectRatio)
@@ -119,6 +130,8 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
     
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         let isSelf = session.localDragSession?.localContext as? UICollectionView == collectionView
+        
+        // outside is copy, inside is move(change destination)
         return UICollectionViewDropProposal(operation: isSelf ? .move : .copy, intent: .insertAtDestinationIndexPath)
     }
     
@@ -126,8 +139,10 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
         let isSelf = session.localDragSession?.localContext as? UICollectionView == collectionView
         if isSelf {
+            // we are in collection so we need take only image
             return session.canLoadObjects(ofClass: UIImage.self)
         } else {
+            // outside of program so we need url else
             return session.canLoadObjects(ofClass: UIImage.self) && session.canLoadObjects(ofClass: URL.self)
         }
     }
@@ -139,12 +154,24 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
         for item in coordinator.items {
             if let sourceIndexPath = item.sourceIndexPath {
                 // local drag
+                // Synchronize reloading of the collection
+                collectionView.performBatchUpdates {
+                    let dragedImage = imageCollection.remove(at: sourceIndexPath.item)
+                    imageCollection.insert(dragedImage, at: destanationIndexPath.item)
+                    collectionView.deleteItems(at: [sourceIndexPath])
+                    collectionView.insertItems(at: [destanationIndexPath])
+                
+                }
+                coordinator.drop(item.dragItem, toItemAt: destanationIndexPath)
+    
             } else {
-                // drag from outside
+                // Drag from outside
+                // Move image to the second prototype our image from outside
                 let placeHolderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destanationIndexPath, reuseIdentifier: "PlaceHolderCell"))
+               
                 var imageURLLocal: URL?
                 var aspectRatioLocal: Double?
-                //Load image
+                //Load image, not main thread
                 item.dragItem.itemProvider.loadObject(ofClass: UIImage.self) { provider, error in
                     DispatchQueue.main.async {
                         if let image = provider as? UIImage {
@@ -159,8 +186,9 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                             imageURLLocal = url.imageURL
                         }
                         if imageURLLocal != nil, aspectRatioLocal != nil {
+                            // everything ok so add image to the collection
                             placeHolderContext.commitInsertion { insertionIndexPath in
-                                self.imageCollection.insert(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)
+                                self.imageCollection.insert(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed 
                             }
                         } else {
                             placeHolderContext.deletePlaceholder()
@@ -169,5 +197,17 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                 }
             }
         }
+    }
+}
+
+extension ImageGalleryCollectionViewController: UICollectionViewDragDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = collectionView
+        return dragItems(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForAddingTo session: UIDragSession, at indexPath: IndexPath, point: CGPoint) -> [UIDragItem] {
+        return dragItems(at: indexPath)
     }
 }
