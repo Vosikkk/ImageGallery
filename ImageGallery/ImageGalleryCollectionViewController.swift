@@ -11,6 +11,7 @@ import UIKit
 
 class ImageGalleryCollectionViewController: UICollectionViewController {
 
+    // MARK: - Properties
     var scale: CGFloat = 1 {
         didSet {
             collectionView?.collectionViewLayout.invalidateLayout()
@@ -38,6 +39,8 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return min(max(width, boundsColectionWidth * Constants.minWidthRation), boundsColectionWidth)
     }
     
+    
+    // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(zoom)))
@@ -48,6 +51,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         flowLayout?.invalidateLayout()
     }
+    
     
     @objc private func zoom(_ gesture: UIPinchGestureRecognizer) {
         if gesture.state == .changed {
@@ -83,7 +87,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     }
     
 
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -97,6 +101,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Image Cell", for: indexPath)
         if let imageCell = cell as? ImageCollectionViewCell {
+            // if we've couldn't load image so make error image with the same size
             imageCell.changeAspectRatio = { [weak self] in
                 if let aspectRatio = self?.imageCollection[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
                     self?.imageCollection[indexPath.item].aspectRatio = 1.0
@@ -109,11 +114,16 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return cell
     }
     
+    // MARK: Nested type
+   
     struct Constants {
         static let columnCount = 3.0
         static let minWidthRation = CGFloat(0.03)
     }
 }
+
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension ImageGalleryCollectionViewController: UICollectionViewDelegateFlowLayout {
     
@@ -125,6 +135,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDelegateFlowLayo
     }
 }
 
+// MARK: - UICollectionViewDropDelegate
 extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
     
     
@@ -200,10 +211,14 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
     }
 }
 
+// MARK: - UICollectionViewDragDelegate
+
 extension ImageGalleryCollectionViewController: UICollectionViewDragDelegate {
     
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        // Hey dropSessionDidUpdate it's drag from my app, so move it bro
         session.localContext = collectionView
+        
         return dragItems(at: indexPath)
     }
     
