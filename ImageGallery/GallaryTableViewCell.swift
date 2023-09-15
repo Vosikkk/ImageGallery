@@ -24,7 +24,7 @@ class GallaryTableViewCell: UITableViewCell {
         nameTextField.isEnabled = true
         nameTextField.becomeFirstResponder()
     }
-    
+        
     var registrationHandler: (() -> Void)?
     
     
