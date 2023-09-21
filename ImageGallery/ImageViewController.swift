@@ -23,7 +23,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             return imageView.image
         }
         set {
-            
             imageView.image = newValue
             imageView.sizeToFit()
             scrollView?.contentSize = imageView.frame.size
@@ -92,7 +91,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         if !autoZoom {
             return
         }
-        
         if let sv = scrollView, image != nil && (imageView.bounds.size.width > 0) && (scrollView.bounds.size.width > 0) {
             let widthRatio = scrollView.bounds.size.width / imageView.bounds.size.width
             let heightRatio = scrollView.bounds.size.height / imageView.bounds.size.height

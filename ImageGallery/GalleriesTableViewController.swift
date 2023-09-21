@@ -20,32 +20,14 @@ class GalleriesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagesGalleries = [
-            [ImageGallery(name: "Gallery 1"),
-             ImageGallery(name: "Gallery 2"),
-             ImageGallery(name: "Gallery 3")],
-            [ImageGallery(name: "Gallery 58")]
-
-
-
-        ]
-        
+        imagesGalleries = [[ImageGallery(name: "Gallery one")]]
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let currentIndex = lastIndexPath != nil ? lastIndexPath! : IndexPath(row: 0, section: 0)
         selectRow(at: currentIndex)
-        
-        // tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
     }
 
-    
-    
-    
-    private func galleryName(at indexPath: IndexPath) -> String {
-        return imagesGalleries[indexPath.section][indexPath.row].name
-    }
-  
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -71,6 +53,7 @@ class GalleriesTableViewController: UITableViewController {
                     if let name = galleryCell.nameTextField.text {
                         self?.imagesGalleries[indexPath.section][indexPath.row].name = name
                         self?.tableView.reloadData()
+                        self?.selectRow(at: indexPath)
                     }
                 }
             }
@@ -92,7 +75,8 @@ class GalleriesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 1: return "Recently deleted"
+        case 1:
+            return imagesGalleries[section].count > 0 ? "Recently deleted" : nil
         default: return nil
         }
     }
@@ -107,12 +91,18 @@ class GalleriesTableViewController: UITableViewController {
         if editingStyle == .delete {
             switch indexPath.section {
             case 0:
-                tableView.performBatchUpdates {
-                    imagesGalleries[1].insert(imagesGalleries[0].remove(at: indexPath.row), at: 0)
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                    tableView.insertRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
-                } completion: { finished in
-                    self.selectRow(at: IndexPath(row: 0, section: 1), after: 0.3)
+                if indexPath.section < 2 {
+                    let removedRow = imagesGalleries[0].remove(at: indexPath.row)
+                    imagesGalleries.insert([removedRow], at: 1)
+                    tableView.reloadData()
+                } else {
+                    tableView.performBatchUpdates {
+                        imagesGalleries[1].insert(imagesGalleries[0].remove(at: indexPath.row), at: 0)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        tableView.insertRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
+                    } completion: { finished in
+                        self.selectRow(at: IndexPath(row: 0, section: 1), after: 0.3)
+                    }
                 }
             case 1:
                 tableView.performBatchUpdates {
@@ -168,7 +158,6 @@ class GalleriesTableViewController: UITableViewController {
     
     // MARK: - Navigation
     private func showCollection(at indexPath: IndexPath) {
-        
         if let vc = splitViewDetailCollectionController {
             lastIndexPath = indexPath
             if indexPath.section != 1 {
@@ -179,26 +168,20 @@ class GalleriesTableViewController: UITableViewController {
                 let newName = "Recentrly deleted ' " + imagesGalleries[indexPath.section][indexPath.row].name + " '"
                 vc.imageCollection = ImageGallery(name: newName)
                 vc.title = newName
-                vc.collectionView.isUserInteractionEnabled = true
+                vc.collectionView.isUserInteractionEnabled = false
             }
         }
     }
   
-     
-     
-     
-     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-  //  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-  //  }
-    
-    
     private func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
             Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { timer in
                 self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                 self.showCollection(at: indexPath)
         }
     }
+   
+    private func galleryName(at indexPath: IndexPath) -> String {
+        return imagesGalleries[indexPath.section][indexPath.row].name
+    }
+  
 }
