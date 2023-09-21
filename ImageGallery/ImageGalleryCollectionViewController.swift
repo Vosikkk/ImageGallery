@@ -29,7 +29,13 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return (collectionView?.bounds.width)!
     }
     
-    var imageCollection = [ImageModel]()
+    var imageCollection = ImageGallery(name: " ") {
+        didSet {
+            if !(imageCollection === oldValue) {
+                collectionView?.reloadData()
+            }
+        }
+    }
    
     var flowLayout: UICollectionViewFlowLayout? {
            return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
@@ -44,11 +50,12 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(zoom)))
-        collectionView.dropDelegate = self
-        collectionView.dragDelegate = self
+        collectionView!.dropDelegate = self
+        collectionView!.dragDelegate = self
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         flowLayout?.invalidateLayout()
     }
     
@@ -62,7 +69,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         if let itemCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell, let image = itemCell.imageGallery.image {
             let dragItem = UIDragItem(itemProvider: NSItemProvider(object: image))
-            dragItem.localObject = imageCollection[indexPath.item]
+            dragItem.localObject = imageCollection.images[indexPath.item]
             return [dragItem]
         } else {
             return []
@@ -77,9 +84,9 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
             switch identifier {
             case "Show Image":
                 if let imageCell = sender as? ImageCollectionViewCell,
-                   let indexPath = collectionView.indexPath(for: imageCell),
+                   let indexPath = collectionView?.indexPath(for: imageCell),
                    let imageMVC = segue.destination as? ImageViewController {
-                    imageMVC.imageURL = imageCollection[indexPath.item].url
+                    imageMVC.imageURL = imageCollection.images[indexPath.item].url
                 }
             default: break
             }
@@ -95,7 +102,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       return imageCollection.count
+        return imageCollection.images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -103,12 +110,12 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         if let imageCell = cell as? ImageCollectionViewCell {
             // if we've couldn't load image so make error image with the same size
             imageCell.changeAspectRatio = { [weak self] in
-                if let aspectRatio = self?.imageCollection[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
-                    self?.imageCollection[indexPath.item].aspectRatio = 1.0
+                if let aspectRatio = self?.imageCollection.images[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
+                    self?.imageCollection.images[indexPath.item].aspectRatio = 1.0
                     self?.flowLayout?.invalidateLayout()
                 }
             }
-            imageCell.imageURL = imageCollection[indexPath.item].url
+            imageCell.imageURL = imageCollection.images[indexPath.item].url
         }
     
         return cell
@@ -130,7 +137,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // Make each image with the same width
         let width = predefinedWidth
-        let aspectRatio = CGFloat(imageCollection[indexPath.item].aspectRatio)
+        let aspectRatio = CGFloat(imageCollection.images[indexPath.item].aspectRatio)
         return CGSize(width: width, height: width / aspectRatio)
     }
 }
@@ -167,8 +174,8 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                 // local drag
                 // Synchronize reloading of the collection
                 collectionView.performBatchUpdates {
-                    let dragedImage = imageCollection.remove(at: sourceIndexPath.item)
-                    imageCollection.insert(dragedImage, at: destanationIndexPath.item)
+                    let dragedImage = imageCollection.images.remove(at: sourceIndexPath.item)
+                    imageCollection.images.insert(dragedImage, at: destanationIndexPath.item)
                     collectionView.deleteItems(at: [sourceIndexPath])
                     collectionView.insertItems(at: [destanationIndexPath])
                 
@@ -199,7 +206,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                         if imageURLLocal != nil, aspectRatioLocal != nil {
                             // everything ok so add image to the collection
                             placeHolderContext.commitInsertion { insertionIndexPath in
-                                self.imageCollection.insert(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed 
+                                self.imageCollection.images.insert(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed
                             }
                         } else {
                             placeHolderContext.deletePlaceholder()
@@ -218,7 +225,6 @@ extension ImageGalleryCollectionViewController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         // Hey dropSessionDidUpdate it's drag from my app, so move it bro
         session.localContext = collectionView
-        
         return dragItems(at: indexPath)
     }
     

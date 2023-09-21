@@ -14,7 +14,7 @@ struct ImageModel {
     
 }
 
-struct ImageGallery {
+class ImageGallery {
     var name: String
     var images = [ImageModel]()
     
@@ -22,3 +22,10 @@ struct ImageGallery {
         self.name = name
     }
 }
+
+//final class ImageGalleryBox {
+//    var imageGallery: ImageGallery
+//    init(imageGallery: ImageGallery) {
+//        self.imageGallery = imageGallery
+//    }
+//}

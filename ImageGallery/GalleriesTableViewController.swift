@@ -9,6 +9,14 @@ import UIKit
 
 class GalleriesTableViewController: UITableViewController {
 
+    private var splitViewDetailCollectionController: ImageGalleryCollectionViewController? {
+        let navController = splitViewController?.viewControllers.last as? UINavigationController
+        return navController?.viewControllers.first as? ImageGalleryCollectionViewController
+    }
+     
+    var imagesGalleries = [[ImageGallery]]()
+    
+    private var lastIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,18 +25,21 @@ class GalleriesTableViewController: UITableViewController {
              ImageGallery(name: "Gallery 2"),
              ImageGallery(name: "Gallery 3")],
             [ImageGallery(name: "Gallery 58")]
-        
-        
-        
+
+
+
         ]
         
     }
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
-//    }
-//
-    var imagesGalleries = [[ImageGallery]]()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let currentIndex = lastIndexPath != nil ? lastIndexPath! : IndexPath(row: 0, section: 0)
+        selectRow(at: currentIndex)
+        
+        // tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+    }
+
+    
     
     
     private func galleryName(at indexPath: IndexPath) -> String {
@@ -65,14 +76,13 @@ class GalleriesTableViewController: UITableViewController {
             }
             
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "Title Cell", for: indexPath)
-             
-            if #available(iOS 14, *) {
+             cell = tableView.dequeueReusableCell(withIdentifier: "Title Cell", for: indexPath)
+             if #available(iOS 14, *) {
                 var content = cell.defaultContentConfiguration()
                 content.text = galleryName(at: indexPath)
                 cell.contentConfiguration = content
-
-            } else {
+                 
+             } else {
                 cell.textLabel?.text = galleryName(at: indexPath)
             }
         }
@@ -87,15 +97,9 @@ class GalleriesTableViewController: UITableViewController {
         }
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showCollection(at: indexPath)
     }
-    */
-
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -153,36 +157,48 @@ class GalleriesTableViewController: UITableViewController {
         }
     }
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    @IBAction func addNewGallery(_ sender: UIBarButtonItem) {
+        imagesGalleries[0] += [
+            ImageGallery(name: "New Gallery".madeUnique(withRespectTo: imagesGalleries.flatMap{$0}.map{$0.name}))
+        ]
+        tableView.reloadData()
+        selectRow(at: IndexPath(row: imagesGalleries[0].count - 1, section: 0))
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
+    
     // MARK: - Navigation
-
+    private func showCollection(at indexPath: IndexPath) {
+        
+        if let vc = splitViewDetailCollectionController {
+            lastIndexPath = indexPath
+            if indexPath.section != 1 {
+                vc.imageCollection = imagesGalleries[indexPath.section][indexPath.row]
+                vc.title = imagesGalleries[indexPath.section][indexPath.row].name
+                vc.collectionView.isUserInteractionEnabled = true
+            } else {
+                let newName = "Recentrly deleted ' " + imagesGalleries[indexPath.section][indexPath.row].name + " '"
+                vc.imageCollection = ImageGallery(name: newName)
+                vc.title = newName
+                vc.collectionView.isUserInteractionEnabled = true
+            }
+        }
+    }
+  
+     
+     
+     
+     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  //  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-    }
-    */
+  //  }
+    
     
     private func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
-//        if tableView(self.tableView, numberOfRowsInSection: indexPath.section) > indexPath.row {
             Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { timer in
                 self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                // }
+                self.showCollection(at: indexPath)
         }
     }
 }
