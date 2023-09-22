@@ -19,6 +19,7 @@
 		383AEB5D2AB3368700AA45D0 /* GallaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */; };
 		383AEB5F2AB33D0600AA45D0 /* GalleriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */; };
 		3869A6A02AB1E1CB005E0BEB /* Extension+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */; };
+		389858AF2ABDA35B00372CD9 /* GarbageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389858AE2ABDA35B00372CD9 /* GarbageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GallaryTableViewCell.swift; sourceTree = "<group>"; };
 		383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewController.swift; sourceTree = "<group>"; };
 		3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+URL.swift"; sourceTree = "<group>"; };
+		389858AE2ABDA35B00372CD9 /* GarbageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarbageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 			children = (
 				38088C982AB086BE00558570 /* SupportingFiles */,
 				38088C8A2AB0869100558570 /* Main.storyboard */,
+				389858AE2ABDA35B00372CD9 /* GarbageView.swift */,
 				383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */,
 				383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */,
 				38088C992AB0875D00558570 /* ImageGalleryCollectionViewController.swift */,
@@ -166,6 +169,7 @@
 			files = (
 				3869A6A02AB1E1CB005E0BEB /* Extension+URL.swift in Sources */,
 				38088C9A2AB0875D00558570 /* ImageGalleryCollectionViewController.swift in Sources */,
+				389858AF2ABDA35B00372CD9 /* GarbageView.swift in Sources */,
 				38088CA02AB090C600558570 /* ImageGallery.swift in Sources */,
 				38088C852AB0869100558570 /* AppDelegate.swift in Sources */,
 				383AEB5D2AB3368700AA45D0 /* GallaryTableViewCell.swift in Sources */,

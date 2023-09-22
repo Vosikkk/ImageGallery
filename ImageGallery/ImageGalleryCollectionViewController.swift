@@ -44,6 +44,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         let width = floor((boundsColectionWidth - gapItems - gapSection) / CGFloat(Constants.columnCount)) * scale
         return min(max(width, boundsColectionWidth * Constants.minWidthRation), boundsColectionWidth)
     }
+    var garbageView = GarbageView()
     
     
     // MARK:
@@ -52,6 +53,17 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         collectionView?.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(zoom)))
         collectionView!.dropDelegate = self
         collectionView!.dragDelegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let navBounds = navigationController?.navigationBar.bounds {
+            garbageView.frame = CGRect(x: navBounds.width * 0.6, y: 0.0, width: navBounds.width * 0.4, height: navBounds.height)
+            let barButton = UIBarButtonItem(customView: garbageView)
+            navigationItem.rightBarButtonItem = barButton
+           // navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        }
+        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -69,7 +81,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     private func dragItems(at indexPath: IndexPath) -> [UIDragItem] {
         if let itemCell = collectionView.cellForItem(at: indexPath) as? ImageCollectionViewCell, let image = itemCell.imageGallery.image {
             let dragItem = UIDragItem(itemProvider: NSItemProvider(object: image))
-            dragItem.localObject = imageCollection.images[indexPath.item]
+            dragItem.localObject = indexPath //imageCollection.images[indexPath.item]
             return [dragItem]
         } else {
             return []

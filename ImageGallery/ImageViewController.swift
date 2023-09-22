@@ -96,7 +96,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             let heightRatio = scrollView.bounds.size.height / imageView.bounds.size.height
             sv.zoomScale = (widthRatio > heightRatio) ? widthRatio : heightRatio
             sv.contentOffset = CGPoint(x: (imageView.frame.size.width - sv.frame.size.width) / 2,
-                                               y: (imageView.frame.size.height - sv.frame.size.height) / 2)
+                                       y: (imageView.frame.size.height - sv.frame.size.height) / 2)
         }
     }
 }

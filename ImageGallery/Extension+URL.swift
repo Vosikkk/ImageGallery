@@ -80,6 +80,26 @@ extension UIImage {
         return blurredImage
     }
     
+    class func imageFromSystemBarButton(_ systemItem: UIBarButtonItem.SystemItem, renderingMode: UIImage.RenderingMode = .automatic) -> UIImage {
+        let tempItem = UIBarButtonItem(barButtonSystemItem: systemItem, target: nil, action: nil)
+        let bar = UIToolbar()
+        bar.setItems([tempItem], animated: false)
+        bar.snapshotView(afterScreenUpdates: true)
+        
+        let itemView = tempItem.value(forKey: "view") as! UIView
+        
+        for view in itemView.subviews {
+            if view is UIButton {
+                let button = view as! UIButton
+                let image = button.imageView!.image!
+                image.withRenderingMode(renderingMode)
+                return image
+            }
+        }
+        
+        return UIImage()
+    }
+    
 }
 
 
