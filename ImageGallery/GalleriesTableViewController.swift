@@ -8,26 +8,68 @@
 import UIKit
 
 class GalleriesTableViewController: UITableViewController {
-
+    
     private var splitViewDetailCollectionController: ImageGalleryCollectionViewController? {
         let navController = splitViewController?.viewControllers.last as? UINavigationController
         return navController?.viewControllers.first as? ImageGalleryCollectionViewController
     }
-     
+    
+    let defaults = UserDefaults.standard
+    
+    var imageGalleriesJSON: [[ImageGallery]]? {
+        get {
+            if let savedGalleriesData = defaults.object(forKey: "SavedGalleries") as? Data {
+                let decoder = JSONDecoder()
+                if let loadedGalleries = try? decoder.decode([[ImageGallery]].self, from: savedGalleriesData) {
+                    return loadedGalleries
+                }
+            }
+            return nil
+        }
+        set {
+            if newValue != nil {
+                let encoder = JSONEncoder()
+                if let json = try? encoder.encode(newValue) {
+                    defaults.set(json, forKey: "SavedGalleries")
+                }
+            }
+        }
+    }
+    
     var imagesGalleries = [[ImageGallery]]()
     
     private var lastIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagesGalleries = [[ImageGallery(name: "Gallery one")]]
+        
+        if let loadedGalleriesFromJSON = imageGalleriesJSON {
+            imagesGalleries = loadedGalleriesFromJSON
+        } else {
+            imagesGalleries = [[ImageGallery(name: "Gallery one")]]
+        }
+        
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let currentIndex = lastIndexPath != nil ? lastIndexPath! : IndexPath(row: 0, section: 0)
         selectRow(at: currentIndex)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        imageGalleriesJSON = imagesGalleries
+    }
+//
+//    override func viewWillLayoutSubviews() {
+//          super.viewWillLayoutSubviews()
+//        if splitViewController?.preferredDisplayMode != .oneOverSecondary {
+//              splitViewController?.preferredDisplayMode = .oneOverSecondary
+//          }
+//      }
+//
+//
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -91,17 +133,18 @@ class GalleriesTableViewController: UITableViewController {
         if editingStyle == .delete {
             switch indexPath.section {
             case 0:
-                if indexPath.section < 2 {
+                if imagesGalleries.count < 2 {
                     let removedRow = imagesGalleries[0].remove(at: indexPath.row)
                     imagesGalleries.insert([removedRow], at: 1)
                     tableView.reloadData()
+                    self.selectRow(at: IndexPath(row: 0, section: 1))
                 } else {
                     tableView.performBatchUpdates {
                         imagesGalleries[1].insert(imagesGalleries[0].remove(at: indexPath.row), at: 0)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         tableView.insertRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
                     } completion: { finished in
-                        self.selectRow(at: IndexPath(row: 0, section: 1), after: 0.3)
+                        self.selectRow(at: IndexPath(row: 0, section: 1), after: 0.6)
                     }
                 }
             case 1:
@@ -109,19 +152,12 @@ class GalleriesTableViewController: UITableViewController {
                     imagesGalleries[1].remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 } completion: { finished in
-                    if self.imagesGalleries[0].isEmpty {
-                        self.selectRow(at: IndexPath(row: 0, section: 1))
-                    } else {
-                        self.selectRow(at: IndexPath(row: 0, section: 0))
-                    }
+                    self.selectRow(at: IndexPath(row: 0, section: 0))
                 }
             default: break
                 
             }
-           
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     
     
@@ -174,9 +210,11 @@ class GalleriesTableViewController: UITableViewController {
     }
   
     private func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
-            Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { timer in
-                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-                self.showCollection(at: indexPath)
+        if tableView(self.tableView, numberOfRowsInSection: indexPath.section) > indexPath.row {
+            Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { [weak self] timer in
+                self?.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                self?.showCollection(at: indexPath)
+            }
         }
     }
    

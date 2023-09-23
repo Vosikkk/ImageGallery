@@ -61,7 +61,6 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
             garbageView.frame = CGRect(x: navBounds.width * 0.6, y: 0.0, width: navBounds.width * 0.4, height: navBounds.height)
             let barButton = UIBarButtonItem(customView: garbageView)
             navigationItem.rightBarButtonItem = barButton
-           // navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         }
         
     }

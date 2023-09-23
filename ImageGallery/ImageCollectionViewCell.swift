@@ -27,9 +27,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
                 let urlContents = try? Data(contentsOf: url)
                 DispatchQueue.main.async {
                     if let imageData = urlContents, url == self.imageURL, let image = UIImage(data: imageData) {
-                        self.imageGallery.image = image
+                        self.imageGallery?.image = image
                     } else {
-                        self.imageGallery.image = "Error 😡".emojiToImage()?.applyBlurEffect()
+                        self.imageGallery?.image = "Error 😡".emojiToImage()
                         self.changeAspectRatio?()
                     }
                     self.spinner?.stopAnimating()
