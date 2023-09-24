@@ -9,14 +9,16 @@ import UIKit
 
 class GalleriesTableViewController: UITableViewController {
     
+    // MARK: - Properties
+    
     private var splitViewDetailCollectionController: ImageGalleryCollectionViewController? {
         let navController = splitViewController?.viewControllers.last as? UINavigationController
         return navController?.viewControllers.first as? ImageGalleryCollectionViewController
     }
     
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
-    var imageGalleriesJSON: [[ImageGallery]]? {
+    private var imageGalleriesJSON: [[ImageGallery]]? {
         get {
             if let savedGalleriesData = defaults.object(forKey: "SavedGalleries") as? Data {
                 let decoder = JSONDecoder()
@@ -36,19 +38,30 @@ class GalleriesTableViewController: UITableViewController {
         }
     }
     
-    var imagesGalleries = [[ImageGallery]]()
+    private var imagesGalleries = [[ImageGallery]]()
     
     private var lastIndexPath: IndexPath?
     
+    // MARK: - Action
+   
+    @IBAction func addNewGallery(_ sender: UIBarButtonItem) {
+        imagesGalleries[0] += [
+            ImageGallery(name: "New Gallery".madeUnique(withRespectTo: imagesGalleries.flatMap{$0}.map{$0.name}))
+        ]
+        tableView.reloadData()
+        selectRow(at: IndexPath(row: imagesGalleries[0].count - 1, section: 0))
+    }
+    
+    //MARK: - Controller life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if let loadedGalleriesFromJSON = imageGalleriesJSON {
             imagesGalleries = loadedGalleriesFromJSON
         } else {
             imagesGalleries = [[ImageGallery(name: "Gallery one")]]
         }
-        
+       // UserDefaults.standard.removeObject(forKey: "SavedGalleries")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,15 +74,7 @@ class GalleriesTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         imageGalleriesJSON = imagesGalleries
     }
-//
-//    override func viewWillLayoutSubviews() {
-//          super.viewWillLayoutSubviews()
-//        if splitViewController?.preferredDisplayMode != .oneOverSecondary {
-//              splitViewController?.preferredDisplayMode = .oneOverSecondary
-//          }
-//      }
-//
-//
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -115,6 +120,8 @@ class GalleriesTableViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - Table view delegate
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 1:
@@ -133,6 +140,7 @@ class GalleriesTableViewController: UITableViewController {
         if editingStyle == .delete {
             switch indexPath.section {
             case 0:
+                // only 1 section so create second
                 if imagesGalleries.count < 2 {
                     let removedRow = imagesGalleries[0].remove(at: indexPath.row)
                     imagesGalleries.insert([removedRow], at: 1)
@@ -183,31 +191,29 @@ class GalleriesTableViewController: UITableViewController {
         }
     }
 
-    @IBAction func addNewGallery(_ sender: UIBarButtonItem) {
-        imagesGalleries[0] += [
-            ImageGallery(name: "New Gallery".madeUnique(withRespectTo: imagesGalleries.flatMap{$0}.map{$0.name}))
-        ]
-        tableView.reloadData()
-        selectRow(at: IndexPath(row: imagesGalleries[0].count - 1, section: 0))
-    }
 
     
     // MARK: - Navigation
+   
     private func showCollection(at indexPath: IndexPath) {
         if let vc = splitViewDetailCollectionController {
+            // if we return from collection to the table the last chosen collection will be selected
             lastIndexPath = indexPath
             if indexPath.section != 1 {
                 vc.imageCollection = imagesGalleries[indexPath.section][indexPath.row]
                 vc.title = imagesGalleries[indexPath.section][indexPath.row].name
                 vc.collectionView.isUserInteractionEnabled = true
             } else {
-                let newName = "Recentrly deleted ' " + imagesGalleries[indexPath.section][indexPath.row].name + " '"
+                let newName = "Recently deleted ' " + imagesGalleries[indexPath.section][indexPath.row].name + " '"
                 vc.imageCollection = ImageGallery(name: newName)
                 vc.title = newName
+                // Can't see what this collection contains and put images here
                 vc.collectionView.isUserInteractionEnabled = false
             }
         }
     }
+    
+    // MARK: - private functions
   
     private func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
         if tableView(self.tableView, numberOfRowsInSection: indexPath.section) > indexPath.row {

@@ -21,11 +21,13 @@ class GarbageView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        // as an array so we take first element it's our trash set frame
         if self.subviews.count > 0 {
             self.subviews[0].frame = CGRect(x: bounds.width - bounds.height, y: 0, width: bounds.height, height: bounds.height)
         }
     }
     
+    // MARK: - private function
     private func setUp() {
         let dropIteraction = UIDropInteraction(delegate: self)
         addInteraction(dropIteraction)
@@ -35,11 +37,10 @@ class GarbageView: UIView {
         myButton.setImage(trashImage, for: .normal)
         self.addSubview(myButton)
     }
-
 }
 
 
-
+// MARK: - Drop iteraction
 
 extension GarbageView: UIDropInteractionDelegate {
    
@@ -84,6 +85,7 @@ extension GarbageView: UIDropInteractionDelegate {
         }
     }
     
+    // make images which we want so small and set position on the trash
     func dropInteraction(_ interaction: UIDropInteraction, previewForDropping item: UIDragItem, withDefault defaultPreview: UITargetedDragPreview) -> UITargetedDragPreview? {
         let target = UIDragPreviewTarget(container: self,
                                          center: CGPoint(x: bounds.width - bounds.height * 1 / 2,

@@ -12,20 +12,21 @@ import UIKit
 class ImageGalleryCollectionViewController: UICollectionViewController {
 
     // MARK: - Properties
-    var scale: CGFloat = 1 {
+   
+    private var scale: CGFloat = 1 {
         didSet {
             collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
     
-    var gapItems: CGFloat {
+    private var gapItems: CGFloat {
         return (flowLayout?.minimumInteritemSpacing)! * CGFloat((Constants.columnCount - 1.0))
     }
-    var gapSection: CGFloat {
+    private var gapSection: CGFloat {
         return (flowLayout?.sectionInset.right)! * 2.0
     }
     
-    var boundsColectionWidth: CGFloat {
+    private var boundsColectionWidth: CGFloat {
         return (collectionView?.bounds.width)!
     }
     
@@ -37,17 +38,18 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         }
     }
    
-    var flowLayout: UICollectionViewFlowLayout? {
+    private var flowLayout: UICollectionViewFlowLayout? {
            return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
     }
-    var predefinedWidth: CGFloat {
+    private var predefinedWidth: CGFloat {
         let width = floor((boundsColectionWidth - gapItems - gapSection) / CGFloat(Constants.columnCount)) * scale
         return min(max(width, boundsColectionWidth * Constants.minWidthRation), boundsColectionWidth)
     }
-    var garbageView = GarbageView()
+    private var garbageView = GarbageView()
     
     
-    // MARK:
+    // MARK: - Controller life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(zoom)))
@@ -70,6 +72,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         flowLayout?.invalidateLayout()
     }
     
+    // MARK: - private functions
     
     @objc private func zoom(_ gesture: UIPinchGestureRecognizer) {
         if gesture.state == .changed {
@@ -154,6 +157,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDelegateFlowLayo
 }
 
 // MARK: - UICollectionViewDropDelegate
+
 extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
     
     

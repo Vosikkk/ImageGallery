@@ -22,10 +22,3 @@ class ImageGallery: Codable {
         self.name = name
     }
 }
-
-//final class ImageGalleryBox {
-//    var imageGallery: ImageGallery
-//    init(imageGallery: ImageGallery) {
-//        self.imageGallery = imageGallery
-//    }
-//}

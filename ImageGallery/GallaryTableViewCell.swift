@@ -9,7 +9,7 @@ import UIKit
 
 class GallaryTableViewCell: UITableViewCell {
 
-  
+  // MARK: - Outlet
     @IBOutlet weak var nameTextField: UITextField! {
         didSet {
             let tap = UITapGestureRecognizer(target: self, action: #selector(editingBegin))
@@ -29,6 +29,7 @@ class GallaryTableViewCell: UITableViewCell {
 }
 
 
+// MARK: - TextField Delegate
 
 extension GallaryTableViewCell: UITextFieldDelegate {
     
@@ -39,6 +40,7 @@ extension GallaryTableViewCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        // speak with the tableView :)
         registrationHandler?()
     }
 }

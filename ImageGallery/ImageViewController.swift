@@ -9,20 +9,28 @@ import UIKit
 
 class ImageViewController: UIViewController, UIScrollViewDelegate {
     
+    // MARK: - properties
+    
+    // URL of the image to be displayed
     var imageURL: URL? {
         didSet {
+            // Reset the current image when a new URL is set
             image = nil
+           
+            // If the view is visible, fetch and display the new image
             if view.window != nil {
                 fetchImage()
             }
         }
     }
     
+    // The image to be displayed in the view
     private var image: UIImage? {
         get {
             return imageView.image
         }
         set {
+            // Set the image and adjust the view's content size
             imageView.image = newValue
             imageView.sizeToFit()
             scrollView?.contentSize = imageView.frame.size
@@ -33,12 +41,21 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    // Image view to display the fetched image
+    private var imageView = UIImageView()
+    
+    
+    // Flag to control auto-zoom behavior
     private var autoZoom = true
     
+    // UIScrollView delegate method called before zooming begins
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         autoZoom = false
     }
     
+    // MARK: - view cycle
+    
+    // Called when the view appears on the screen
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if imageView.image == nil {
@@ -49,15 +66,21 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    // Called when the view's layout changes
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        // Ensure the image is zoomed to fit the screen
         zoomScaleToFit()
     }
 
+    // MARK: - Outlets
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     @IBOutlet weak var scrollView: UIScrollView! {
         didSet {
+            // Configure scroll view properties
             scrollView.minimumZoomScale = 0.03
             scrollView.maximumZoomScale = 5.0
             scrollView.delegate = self
@@ -65,12 +88,14 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    // Returns the view to be zoomed
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
     
-    var imageView = UIImageView()
+    // MARK: - private functions
     
+    // Fetches the image from the specified URL
     private func fetchImage() {
         autoZoom = true
         if let url = imageURL {
@@ -79,6 +104,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
                 let urlContents = try? Data(contentsOf: url)
                 DispatchQueue.main.async {
                     if let imageData = urlContents, url == self?.imageURL {
+                        // Set the fetched image
                         self?.image = UIImage(data: imageData)
                     }
                 }
@@ -86,7 +112,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    
+    // Adjusts the zoom scale to fit the image to the screen
     private func zoomScaleToFit() {
         if !autoZoom {
             return
