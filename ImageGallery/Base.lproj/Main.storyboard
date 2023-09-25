@@ -186,11 +186,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="XrV-vL-hkB">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HvG-ph-HTI">
-                            <connections>
-                                <action selector="addNewGallery:" destination="Ts6-YH-rfT" id="QXQ-IX-LW6"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="HvG-ph-HTI">
+                                <connections>
+                                    <action selector="addNewGallery:" destination="Ts6-YH-rfT" id="QXQ-IX-LW6"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="save" id="LDP-8E-xYe">
+                                <connections>
+                                    <action selector="saveGalleries:" destination="Ts6-YH-rfT" id="f7l-IF-FxE"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aDD-fP-i54" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

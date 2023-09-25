@@ -53,6 +53,13 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         autoZoom = false
     }
     
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        let xOffset = max((scrollView.bounds.width - scrollView.contentSize.width) * 0.5, 0)
+        let yOffset = max((scrollView.bounds.height - scrollView.contentSize.height) * 0.5, 0)
+        
+        scrollView.contentInset = UIEdgeInsets(top: yOffset, left: xOffset, bottom: 0, right: 0)
+    }
+    
     // MARK: - view cycle
     
     // Called when the view appears on the screen
@@ -121,7 +128,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
             let widthRatio = scrollView.bounds.size.width / imageView.bounds.size.width
             let heightRatio = scrollView.bounds.size.height / imageView.bounds.size.height
             sv.zoomScale = (widthRatio > heightRatio) ? widthRatio : heightRatio
-            sv.contentOffset = CGPoint(x: (imageView.frame.size.width - sv.frame.size.width) / 2,
+             sv.contentOffset = CGPoint(x: (imageView.frame.size.width - sv.frame.size.width) / 2,
                                        y: (imageView.frame.size.height - sv.frame.size.height) / 2)
         }
     }

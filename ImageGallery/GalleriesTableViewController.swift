@@ -75,6 +75,14 @@ class GalleriesTableViewController: UITableViewController {
         imageGalleriesJSON = imagesGalleries
     }
 
+    
+    // MARK: - Action
+    
+    @IBAction func saveGalleries(_ sender: UIBarButtonItem) {
+        imageGalleriesJSON = imagesGalleries
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -160,7 +168,9 @@ class GalleriesTableViewController: UITableViewController {
                     imagesGalleries[1].remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 } completion: { finished in
-                    self.selectRow(at: IndexPath(row: 0, section: 0))
+                    let nextAvailableIndexPath = IndexPath(row: max(0, min(indexPath.row, self.imagesGalleries[1].count - 1)), section: 1)
+                    self.selectRow(at: nextAvailableIndexPath, after: 0.6)
+                        // self.selectRow(at: IndexPath(row: 0, section: 0))
                 }
             default: break
                 
