@@ -30,11 +30,9 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return (collectionView?.bounds.width)!
     }
     
-    var imageCollection = ImageGallery(name: " ") {
+    var imageCollection = ImageGallery() {
         didSet {
-            if !(imageCollection === oldValue) {
-                collectionView?.reloadData()
-            }
+           collectionView?.reloadData()
         }
     }
    
@@ -70,6 +68,15 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         flowLayout?.invalidateLayout()
+    }
+    
+    
+    @IBAction func save(_ sender: UIBarButtonItem) {
+        if let json = imageCollection.json {
+            if let jsonString = String(data: json, encoding: .utf8) {
+                print(jsonString)
+            }
+        }
     }
     
     // MARK: - private functions

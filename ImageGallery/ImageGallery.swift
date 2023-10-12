@@ -14,11 +14,14 @@ struct ImageModel: Codable {
     
 }
 
-class ImageGallery: Codable {
-    var name: String
+struct ImageGallery: Codable {
+    
+    var json: Data? {
+        return try? JSONEncoder().encode(self)
+    }
     var images = [ImageModel]()
     
-    init(name: String) {
-        self.name = name
+    mutating func add(image: ImageModel) {
+        images.append(image)
     }
 }
