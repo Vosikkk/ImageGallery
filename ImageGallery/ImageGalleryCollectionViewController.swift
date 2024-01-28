@@ -132,7 +132,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
             // if we've couldn't load image so make error image with the same size
             imageCell.changeAspectRatio = { [weak self] in
                 if let aspectRatio = self?.imageCollection.images[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
-                    self?.imageCollection.images[indexPath.item].aspectRatio = 1.0
+                    self?.imageCollection.change(aspectRatio: 1.0, at: indexPath.item)
                     self?.flowLayout?.invalidateLayout()
                 }
             }
@@ -196,8 +196,8 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                 // local drag
                 // Synchronize reloading of the collection
                 collectionView.performBatchUpdates {
-                    let dragedImage = imageCollection.images.remove(at: sourceIndexPath.item)
-                    imageCollection.images.insert(dragedImage, at: destanationIndexPath.item)
+                    let dragedImage = imageCollection.remove(at: sourceIndexPath.item)
+                    imageCollection.add(item: dragedImage, at: destanationIndexPath.item)
                     collectionView.deleteItems(at: [sourceIndexPath])
                     collectionView.insertItems(at: [destanationIndexPath])
                 
@@ -228,7 +228,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                         if imageURLLocal != nil, aspectRatioLocal != nil {
                             // everything ok so add image to the collection
                             placeHolderContext.commitInsertion { insertionIndexPath in
-                                self.imageCollection.images.insert(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed
+                                self.imageCollection.add(item: ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed
                             }
                         } else {
                             placeHolderContext.deletePlaceholder()

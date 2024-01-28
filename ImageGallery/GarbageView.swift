@@ -60,7 +60,6 @@ extension GarbageView: UIDropInteractionDelegate {
        
         // It's the same app so we can recevied all information about our collection and model
         if let collectionView = session.localDragSession?.localContext as? UICollectionView,
-           let images = (collectionView.dataSource as? ImageGalleryCollectionViewController)?.imageCollection.images,
            let items = session.localDragSession?.items {
             
             var indexPathes = [IndexPath]()
@@ -77,10 +76,7 @@ extension GarbageView: UIDropInteractionDelegate {
             
             collectionView.performBatchUpdates {
                 collectionView.deleteItems(at: indexPathes)
-                (collectionView.dataSource as? ImageGalleryCollectionViewController)?.imageCollection.images = images
-                    .enumerated()
-                    .filter{ !indices.contains($0.offset) }
-                    .map{ $0.element }
+                (collectionView.dataSource as? ImageGalleryCollectionViewController)?.imageCollection.filterAndMapImages(using: indices)
             }
         }
     }

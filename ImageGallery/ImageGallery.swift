@@ -20,14 +20,32 @@ class ImageGallery: Codable {
     var json: Data? {
         return try? JSONEncoder().encode(self)
     }
-    var images = [ImageModel]()
+    private(set) var images: [ImageModel] = []
     
     
     init(name: String) {
         self.name = name
     }
     
-    func add(image: ImageModel) {
-        images.append(image)
+    func add(item: ImageModel, at index: Int) {
+        images.insert(item, at: index)
+    }
+    
+    func remove(at index: Int) -> ImageModel {
+        images.remove(at: index)
+    }
+    
+    func change(aspectRatio: Double, at index: Int) {
+        images[index].aspectRatio = aspectRatio
+    }
+    
+    func add(items: [ImageModel]) {
+        images = items
+    }
+    func filterAndMapImages(using indices: [Int]) {
+            images = images
+                .enumerated()
+                .filter { !indices.contains($0.offset) }
+                .map { $0.element }
     }
 }
