@@ -30,7 +30,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return (collectionView?.bounds.width)!
     }
     
-    var imageCollection = ImageGallery() {
+    var imageCollection = ImageGallery(name: "") {
         didSet {
            collectionView?.reloadData()
         }

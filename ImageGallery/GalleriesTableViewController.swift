@@ -7,6 +7,25 @@
 
 import UIKit
 
+
+extension UserDefaults {
+    
+    func galleries(forKey key: String) -> [[ImageGallery]] {
+        if let jsonData = data(forKey: key),
+           let decodedGalleries = try? JSONDecoder().decode([[ImageGallery]].self, from: jsonData) {
+            return decodedGalleries
+        } else {
+            return []
+        }
+    }
+    
+    func sett(_ galleries: [[ImageGallery]], forKey key: String) {
+        let data = try? JSONEncoder().encode(galleries)
+        set(data, forKey: key)
+    }
+}
+
+
 class GalleriesTableViewController: UITableViewController {
     
     // MARK: - Properties
@@ -20,20 +39,11 @@ class GalleriesTableViewController: UITableViewController {
     
     private var imageGalleriesJSON: [[ImageGallery]]? {
         get {
-            if let savedGalleriesData = defaults.object(forKey: "SavedGalleries") as? Data {
-                let decoder = JSONDecoder()
-                if let loadedGalleries = try? decoder.decode([[ImageGallery]].self, from: savedGalleriesData) {
-                    return loadedGalleries
-                }
-            }
-            return nil
+            defaults.galleries(forKey: "SavedGalleries")
         }
         set {
             if newValue != nil {
-                let encoder = JSONEncoder()
-                if let json = try? encoder.encode(newValue) {
-                    defaults.set(json, forKey: "SavedGalleries")
-                }
+                defaults.sett(newValue!, forKey: "SavedGalleries")
             }
         }
     }
@@ -46,7 +56,7 @@ class GalleriesTableViewController: UITableViewController {
    
     @IBAction func addNewGallery(_ sender: UIBarButtonItem) {
         imagesGalleries[0] += [
-            ImageGallery(name: "New Gallery".madeUnique(withRespectTo: imagesGalleries.flatMap{$0}.map{$0.name}))
+            ImageGallery(name: "New Gallery".madeUnique(withRespectTo: imagesGalleries.flatMap{ $0 }.map{ $0.name }))
         ]
         tableView.reloadData()
         selectRow(at: IndexPath(row: imagesGalleries[0].count - 1, section: 0))
