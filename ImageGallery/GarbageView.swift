@@ -76,7 +76,7 @@ extension GarbageView: UIDropInteractionDelegate {
             
             collectionView.performBatchUpdates {
                 collectionView.deleteItems(at: indexPathes)
-                (collectionView.dataSource as? ImageGalleryCollectionViewController)?.imageCollection.filterAndMapImages(using: indices)
+               // (collectionView.dataSource as? ImageGalleryCollectionViewController)?.imageCollection.filterAndMapImages(using: indices)
             }
         }
     }

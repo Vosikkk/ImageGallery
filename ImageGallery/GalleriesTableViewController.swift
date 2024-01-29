@@ -48,6 +48,8 @@ class GalleriesTableViewController: UITableViewController {
         }
     }
     
+    
+    
     private var imagesGalleries = [[ImageGallery]]()
     
     private var lastIndexPath: IndexPath?
@@ -116,7 +118,7 @@ class GalleriesTableViewController: UITableViewController {
                 // Edit text(name of gallery) and set new name
                 galleryCell.registrationHandler = { [weak self, unowned galleryCell] in
                     if let name = galleryCell.nameTextField.text {
-                        self?.imagesGalleries[indexPath.section][indexPath.row].name = name
+                        self?.imagesGalleries[indexPath.section][indexPath.row].new(name)
                         self?.tableView.reloadData()
                         self?.selectRow(at: indexPath)
                     }
@@ -220,12 +222,12 @@ class GalleriesTableViewController: UITableViewController {
             // if we return from collection to the table the last chosen collection will be selected
             lastIndexPath = indexPath
             if indexPath.section != 1 {
-                vc.imageCollection = imagesGalleries[indexPath.section][indexPath.row]
+                vc.set(imagesGalleries[indexPath.section][indexPath.row])
                 vc.title = imagesGalleries[indexPath.section][indexPath.row].name
                 vc.collectionView.isUserInteractionEnabled = true
             } else {
                 let newName = "Recently deleted ' " + imagesGalleries[indexPath.section][indexPath.row].name + " '"
-                vc.imageCollection = ImageGallery(name: newName)
+                vc.set(ImageGallery(name: newName))
                 vc.title = newName
                 // Can't see what this collection contains and put images here
                 vc.collectionView.isUserInteractionEnabled = false

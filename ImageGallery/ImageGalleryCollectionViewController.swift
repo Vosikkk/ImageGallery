@@ -30,12 +30,20 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         return (collectionView?.bounds.width)!
     }
     
-    var imageCollection = ImageGallery(name: "") {
+    
+    var imageCollection = ImageGallery() {
         didSet {
-           collectionView?.reloadData()
+            collectionView?.reloadData()
+        }
+    }
+    
+    func set(_ gallery: ImageGallery) {
+        if gallery != imageCollection {
+            imageCollection = gallery
         }
     }
    
+    
     private var flowLayout: UICollectionViewFlowLayout? {
            return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
     }
@@ -132,7 +140,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
             // if we've couldn't load image so make error image with the same size
             imageCell.changeAspectRatio = { [weak self] in
                 if let aspectRatio = self?.imageCollection.images[indexPath.item].aspectRatio, aspectRatio < 0.95 || aspectRatio > 1.05 {
-                    self?.imageCollection.change(aspectRatio: 1.0, at: indexPath.item)
+                    self?.imageCollection.update(aspectRatio: 1.0, at: indexPath.item)
                     self?.flowLayout?.invalidateLayout()
                 }
             }
@@ -197,7 +205,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                 // Synchronize reloading of the collection
                 collectionView.performBatchUpdates {
                     let dragedImage = imageCollection.remove(at: sourceIndexPath.item)
-                    imageCollection.add(item: dragedImage, at: destanationIndexPath.item)
+                    imageCollection.add(dragedImage, at: destanationIndexPath.item)
                     collectionView.deleteItems(at: [sourceIndexPath])
                     collectionView.insertItems(at: [destanationIndexPath])
                 
@@ -228,7 +236,7 @@ extension ImageGalleryCollectionViewController: UICollectionViewDropDelegate {
                         if imageURLLocal != nil, aspectRatioLocal != nil {
                             // everything ok so add image to the collection
                             placeHolderContext.commitInsertion { insertionIndexPath in
-                                self.imageCollection.add(item: ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed
+                                self.imageCollection.add(ImageModel(url: imageURLLocal!, aspectRatio: aspectRatioLocal!), at: insertionIndexPath.item)// because recieved image and url is async so destination variable may changed
                             }
                         } else {
                             placeHolderContext.deletePlaceholder()
