@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		380254152B6867D800356240 /* GalleriesTableViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380254142B6867D800356240 /* GalleriesTableViewControllerTests.swift */; };
+		380254172B686E0000356240 /* FakeUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380254162B686E0000356240 /* FakeUserDefaults.swift */; };
 		38088C852AB0869100558570 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C842AB0869100558570 /* AppDelegate.swift */; };
 		38088C872AB0869100558570 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C862AB0869100558570 /* SceneDelegate.swift */; };
 		38088C8C2AB0869100558570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38088C8A2AB0869100558570 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		3802540B2B68674100356240 /* ImageGalleryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageGalleryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		380254142B6867D800356240 /* GalleriesTableViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewControllerTests.swift; sourceTree = "<group>"; };
+		380254162B686E0000356240 /* FakeUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeUserDefaults.swift; sourceTree = "<group>"; };
 		38088C812AB0869100558570 /* ImageGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38088C842AB0869100558570 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38088C862AB0869100558570 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				380254142B6867D800356240 /* GalleriesTableViewControllerTests.swift */,
+				380254162B686E0000356240 /* FakeUserDefaults.swift */,
 			);
 			path = ImageGalleryTests;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				380254152B6867D800356240 /* GalleriesTableViewControllerTests.swift in Sources */,
+				380254172B686E0000356240 /* FakeUserDefaults.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

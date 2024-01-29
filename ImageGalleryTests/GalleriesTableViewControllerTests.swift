@@ -10,8 +10,23 @@ import XCTest
 
 final class GalleriesTableViewControllerTests: XCTestCase {
 
-    func testZero() {
-        XCTFail("tests not implemented yet")
+    private var sut: GalleriesTableViewController!
+    private var defaults: FakeUserDefaults!
+    
+    
+    
+    override func setUp() {
+        super.setUp()
+        let storyboard = UIStoryboard(name: "Name", bundle: nil)
+        sut = storyboard.instantiateViewController(identifier: String(describing: GalleriesTableViewController.self))
+        defaults = FakeUserDefaults()
+        sut.defaults = defaults
     }
-
+    
+    override func tearDown() {
+        sut = nil
+        defaults = nil
+        super.tearDown()
+    }
+    
 }

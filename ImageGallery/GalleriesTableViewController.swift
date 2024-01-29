@@ -8,7 +8,14 @@
 import UIKit
 
 
-extension UserDefaults {
+protocol UserDefaultsProtocol {
+    func galleries(forKey key: String) -> [[ImageGallery]]
+    func sett(_ galleries: [[ImageGallery]], forKey key: String)
+}
+
+
+
+extension UserDefaults: UserDefaultsProtocol {
     
     func galleries(forKey key: String) -> [[ImageGallery]] {
         if let jsonData = data(forKey: key),
@@ -35,7 +42,7 @@ class GalleriesTableViewController: UITableViewController {
         return navController?.viewControllers.first as? ImageGalleryCollectionViewController
     }
     
-    private let defaults = UserDefaults.standard
+    var defaults: UserDefaultsProtocol = UserDefaults.standard
     
     private var imageGalleriesJSON: [[ImageGallery]]? {
         get {

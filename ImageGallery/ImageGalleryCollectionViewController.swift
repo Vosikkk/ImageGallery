@@ -51,6 +51,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController {
         let width = floor((boundsColectionWidth - gapItems - gapSection) / CGFloat(Constants.columnCount)) * scale
         return min(max(width, boundsColectionWidth * Constants.minWidthRation), boundsColectionWidth)
     }
+    
     private var garbageView = GarbageView()
     
     
