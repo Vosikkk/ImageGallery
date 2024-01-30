@@ -44,20 +44,20 @@ class GalleriesTableViewController: UITableViewController {
     
     var defaults: UserDefaultsProtocol = UserDefaults.standard
     
-    private var imageGalleriesJSON: [[ImageGallery]]? {
+    var imageGalleriesJSON: [[ImageGallery]] {
         get {
             defaults.galleries(forKey: "SavedGalleries")
         }
         set {
-            if newValue != nil {
-                defaults.sett(newValue!, forKey: "SavedGalleries")
+            if !newValue.isEmpty {
+                defaults.sett(newValue, forKey: "SavedGalleries")
             }
         }
     }
     
     
     
-    private var imagesGalleries = [[ImageGallery]]()
+    var imagesGalleries: [[ImageGallery]] = []
     
     private var lastIndexPath: IndexPath?
     
@@ -75,8 +75,8 @@ class GalleriesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let loadedGalleriesFromJSON = imageGalleriesJSON {
-            imagesGalleries = loadedGalleriesFromJSON
+        if !imageGalleriesJSON.isEmpty {
+            imagesGalleries = imageGalleriesJSON
         } else {
             imagesGalleries = [[ImageGallery(name: "Gallery one")]]
         }
