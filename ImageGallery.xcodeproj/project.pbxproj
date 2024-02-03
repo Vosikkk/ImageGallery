@@ -12,12 +12,13 @@
 		38088C852AB0869100558570 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C842AB0869100558570 /* AppDelegate.swift */; };
 		38088C872AB0869100558570 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C862AB0869100558570 /* SceneDelegate.swift */; };
 		38088C8C2AB0869100558570 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38088C8A2AB0869100558570 /* Main.storyboard */; };
-		38088C8E2AB0869200558570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38088C8D2AB0869200558570 /* Assets.xcassets */; };
 		38088C912AB0869200558570 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38088C8F2AB0869200558570 /* LaunchScreen.storyboard */; };
 		38088C9A2AB0875D00558570 /* ImageGalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C992AB0875D00558570 /* ImageGalleryCollectionViewController.swift */; };
 		38088C9E2AB08A8C00558570 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C9D2AB08A8C00558570 /* ImageCollectionViewCell.swift */; };
 		38088CA02AB090C600558570 /* ImageGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C9F2AB090C600558570 /* ImageGallery.swift */; };
 		38088CA22AB0A9A800558570 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088CA12AB0A9A800558570 /* ImageViewController.swift */; };
+		381285BF2B6EEB3800490983 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381285BE2B6EEB3800490983 /* TestHelpers.swift */; };
+		381285C12B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */; };
 		383AEB5D2AB3368700AA45D0 /* GallaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */; };
 		383AEB5F2AB33D0600AA45D0 /* GalleriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */; };
 		3869A6A02AB1E1CB005E0BEB /* Extension+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */; };
@@ -42,13 +43,14 @@
 		38088C842AB0869100558570 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38088C862AB0869100558570 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		38088C8B2AB0869100558570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		38088C8D2AB0869200558570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38088C902AB0869200558570 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		38088C922AB0869200558570 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38088C992AB0875D00558570 /* ImageGalleryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryCollectionViewController.swift; sourceTree = "<group>"; };
 		38088C9D2AB08A8C00558570 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		38088C9F2AB090C600558570 /* ImageGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGallery.swift; sourceTree = "<group>"; };
 		38088CA12AB0A9A800558570 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		381285BE2B6EEB3800490983 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewControllerTestsForTableView.swift; sourceTree = "<group>"; };
 		383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GallaryTableViewCell.swift; sourceTree = "<group>"; };
 		383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewController.swift; sourceTree = "<group>"; };
 		3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+URL.swift"; sourceTree = "<group>"; };
@@ -78,6 +80,8 @@
 			children = (
 				380254142B6867D800356240 /* GalleriesTableViewControllerTests.swift */,
 				380254162B686E0000356240 /* FakeUserDefaults.swift */,
+				381285BE2B6EEB3800490983 /* TestHelpers.swift */,
+				381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */,
 			);
 			path = ImageGalleryTests;
 			sourceTree = "<group>";
@@ -123,7 +127,6 @@
 			children = (
 				38088C842AB0869100558570 /* AppDelegate.swift */,
 				38088C862AB0869100558570 /* SceneDelegate.swift */,
-				38088C8D2AB0869200558570 /* Assets.xcassets */,
 				38088C8F2AB0869200558570 /* LaunchScreen.storyboard */,
 			);
 			path = SupportingFiles;
@@ -219,7 +222,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				38088C912AB0869200558570 /* LaunchScreen.storyboard in Resources */,
-				38088C8E2AB0869200558570 /* Assets.xcassets in Resources */,
 				38088C8C2AB0869100558570 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,6 +235,8 @@
 			files = (
 				380254152B6867D800356240 /* GalleriesTableViewControllerTests.swift in Sources */,
 				380254172B686E0000356240 /* FakeUserDefaults.swift in Sources */,
+				381285C12B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift in Sources */,
+				381285BF2B6EEB3800490983 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
