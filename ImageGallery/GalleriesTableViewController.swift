@@ -37,7 +37,7 @@ class GalleriesTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    private var splitViewDetailCollectionController: ImageGalleryCollectionViewController? {
+    var splitViewDetailCollectionController: ImageGalleryCollectionViewController? {
         let navController = splitViewController?.viewControllers.last as? UINavigationController
         return navController?.viewControllers.first as? ImageGalleryCollectionViewController
     }
@@ -158,6 +158,7 @@ class GalleriesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(">>>>>> DidSelect \(imagesGalleries[indexPath.section][indexPath.row].name)")
         showCollection(at: indexPath)
     }
     
@@ -224,7 +225,7 @@ class GalleriesTableViewController: UITableViewController {
     
     // MARK: - Navigation
    
-    private func showCollection(at indexPath: IndexPath) {
+     func showCollection(at indexPath: IndexPath) {
         if let vc = splitViewDetailCollectionController {
             // if we return from collection to the table the last chosen collection will be selected
             lastIndexPath = indexPath

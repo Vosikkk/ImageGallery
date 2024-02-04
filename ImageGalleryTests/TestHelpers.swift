@@ -27,7 +27,6 @@ func cellForRow(in tableView: UITableView, row: Int, section: Int) -> UITableVie
   
 }
 
-
 func titleHeader(in tableView: UITableView, section: Int = 0) -> String? {
     tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section)
 }
@@ -36,9 +35,20 @@ func didSelectRow(in tableView: UITableView, row: Int, section: Int = 0) {
     tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: row, section: section))
 }
 
-//func editingRow(in tableView: UITableView, row: Int, section: Int = 0) {
-//    tableView.delegate?.tableView?(tableView,)
-//}
+
+func executeRunLoop() {
+    RunLoop.current.run(until: Date())
+}
+
+
+
+func editingRow(in tableView: UITableView, commitForEdit: UITableViewCell.EditingStyle, row: Int = 0, section: Int = 0) {
+    tableView.dataSource?.tableView?(tableView, commit: commitForEdit, forRowAt: IndexPath(row: row, section: section))
+    
+}
+
+
+
 extension UITableViewCell {
     var textFromContext: String? {
         (self.contentConfiguration as? UIListContentConfiguration)?.text
@@ -46,3 +56,8 @@ extension UITableViewCell {
 }
 
 
+func putInWindow(_ vc: UIViewController) {
+    let window = UIWindow()
+    window.rootViewController = vc
+    window.isHidden = false
+}

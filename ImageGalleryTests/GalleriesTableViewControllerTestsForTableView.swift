@@ -142,4 +142,51 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
         XCTAssertEqual(cell?.textFromContext, "Deleted")
     }
     
+    
+    func test_titleForHeaderInSection1_shouldBeRecentlyDeleted() {
+        
+        XCTAssertEqual(titleHeader(in: sut.tableView), nil)
+        
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        sut.viewDidLoad()
+        
+        let header = titleHeader(in: sut.tableView, section: 1)
+        
+        XCTAssertEqual(header, "Recently deleted")
+    }
+    
+    func test_didSelectRow__withRow0() {
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        sut.viewDidLoad()
+        didSelectRow(in: sut.tableView, row: 0)
+    }
+    
+    func test_editingStyle_forSection0GalleryDeleteStyle_shouldBeRow0InSection0() {
+        defaults.results = ["SavedGalleries": [[testGallery]]]
+        sut.viewDidLoad()
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondtion")
+    
+        editingRow(in: sut.tableView, commitForEdit: .delete, section: 0)
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 0)
+        
+        
+    }
+    
+    func test_editingStyle_checkingCountOfGalleriesInSection1With1GalleryAfterDeleting1GalleryFromSection0_shouldBe2RowsInSection1() {
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        sut.viewDidLoad()
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondtion")
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondtion")
+        
+        editingRow(in: sut.tableView, commitForEdit: .delete, section: 0)
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 0)
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 2)
+    }
+    
 }
+
+
