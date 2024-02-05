@@ -41,16 +41,23 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     
     
     func test_numberOfSection_shouldBe1() {
-        defaults.results = ["SavedGalleries": [[testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 1)
+        sut.viewDidLoad()
+        let galleriesInDefaults = sut.imageGalleriesJSON.count
+        XCTAssertEqual(numberOfSections(in: sut.tableView), galleriesInDefaults)
+    }
+    
+    func test_numberOfSection_shouldBe2() {
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         let galleriesInDefaults = sut.imageGalleriesJSON.count
         XCTAssertEqual(numberOfSections(in: sut.tableView), galleriesInDefaults)
     }
     
     
-    
     func test_numberOfRowsInSection0_shouldBe2() {
-        defaults.results = ["SavedGalleries": [[testGallery, testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 2)
+        
         let galleriesInDefaults = sut.imageGalleriesJSON[0].count
         sut.viewDidLoad()
         
@@ -58,7 +65,8 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     }
     
     func test_numberOfRowsSection1_shouldBe1() {
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
+
         sut.viewDidLoad()
         let galleriesInDefaults = sut.imageGalleriesJSON[1].count
         
@@ -146,8 +154,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     func test_titleForHeader_shouldBeRecentlyDeletedInSection1AndNilInSection0() {
         
         XCTAssertEqual(titleHeader(in: sut.tableView), nil)
-        
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         
         let header = titleHeader(in: sut.tableView, section: 1)
@@ -157,13 +164,15 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     }
     
     func test_didSelectRow__withRow0() {
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         didSelectRow(in: sut.tableView, row: 0)
     }
     
     func test_editingStyle_forSection0GalleryDeleteStyle_shouldBeRow0InSection0() {
-        defaults.results = ["SavedGalleries": [[testGallery]]]
+        
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 1)
+        
         sut.viewDidLoad()
         
         XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondition")
@@ -176,7 +185,9 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     }
     
     func test_editingStyle_checkingCountOfGalleriesInSection1With1GalleryAfterDeleting1GalleryFromSection0_shouldBe2RowsInSection1() {
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+       
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
+       
         sut.viewDidLoad()
         
         XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondition")
@@ -190,8 +201,8 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     
     
     func test_editingStyleDeleteRowFromSection1_shouldBe0RowInSection1() {
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
-        
+       
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         
         XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondition")
@@ -203,7 +214,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     
     func test_leadingSwipeActionsConfigurationForRowAtSection1_shouldBeNotNilAndActionCount1() {
         
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         
         let configuration = leadingSwipeActionsConfigurationForRow(in: sut.tableView, row: 0, section: 1)
@@ -222,7 +233,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     
     func test_leadingSwipeActionForRowAtSection1_shouldHaveSection1Row0Section0Rows2() {
         
-        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        createGalleries(in: defaults, numerOfSection: 2, galleriesInSection: 1)
         sut.viewDidLoad()
         
         let configuration = leadingSwipeActionsConfigurationForRow(in: sut.tableView, row: 0, section: 1)

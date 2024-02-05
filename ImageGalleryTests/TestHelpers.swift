@@ -57,6 +57,7 @@ extension UITableViewCell {
 }
 
 
+
 func putInWindow(_ vc: UIViewController) {
     let window = UIWindow()
     window.rootViewController = vc
@@ -67,12 +68,19 @@ func tap(_ button: UIBarButtonItem) {
     _ = button.target?.perform(button.action, with: nil)
 }
 
-func createGalleries(in storage: UserDefaultsProtocol, amount: Int, section: Int) {
-    var res: [ImageGallery] = []
-    for _ in 0..<amount {
-        let testGallery = ImageGallery()
-        res.append(testGallery)
+func createGalleries(in defaults: UserDefaultsProtocol, numerOfSection: Int, galleriesInSection: Int) {
+    var res: [[ImageGallery]] = []
+    let testGallery = ImageGallery()
+    for _ in 0..<numerOfSection {
+        let rowArray: [ImageGallery] = Array(repeating: testGallery, count: galleriesInSection)
+        res.append(rowArray)
     }
-    
-    storage.sett([res], forKey: "SavedGalleries")
+    defaults.set(res, forKey: "SavedGalleries")
+}
+
+
+extension UIBarButtonItem {
+    var systemItem: SystemItem? {
+        (value(forKey: "systemItem") as? NSNumber).flatMap { SystemItem(rawValue: $0.intValue )}
+    }
 }

@@ -14,7 +14,7 @@ protocol UserInteractionProtocol {
 
 protocol UserDefaultsProtocol {
     func galleries(forKey key: String) -> [[ImageGallery]]
-    func sett(_ galleries: [[ImageGallery]], forKey key: String)
+    func set(_ galleries: [[ImageGallery]], forKey key: String)
 }
 
 
@@ -30,7 +30,7 @@ extension UserDefaults: UserDefaultsProtocol {
         }
     }
     
-    func sett(_ galleries: [[ImageGallery]], forKey key: String) {
+    func set(_ galleries: [[ImageGallery]], forKey key: String) {
         let data = try? JSONEncoder().encode(galleries)
         set(data, forKey: key)
     }
@@ -54,7 +54,7 @@ class GalleriesTableViewController: UITableViewController {
         }
         set {
             if !newValue.isEmpty {
-                defaults.sett(newValue, forKey: "SavedGalleries")
+                defaults.set(newValue, forKey: "SavedGalleries")
             }
         }
     }

@@ -42,27 +42,23 @@ final class GalleriesTableViewControllerTests: XCTestCase {
     }
     
     func test_viewDidLoad_withOneGalleryInDefaults_shouldBeImageGalleriesJSONCount1() {
-        let gallery = ImageGallery()
-        defaults.results = ["SavedGalleries": [[gallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 1)
         XCTAssertEqual(sut.imageGalleriesJSON.count, 1)
     }
     
     func test_viewDidLoad_withFourGalleriesInDefaults_shouldBeImageGalleriesJSONCount4() {
-        let gallery = ImageGallery()
-        defaults.results = ["SavedGalleries": [[gallery, gallery, gallery, gallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 4)
         XCTAssertEqual(sut.imageGalleriesJSON[0].count, 4)
     }
     
     func test_viewDidLoad_withOneGalleryInDefault_imageGalleriesShouldHaveCount1() {
-        let gallery = ImageGallery()
-        defaults.results = ["SavedGalleries": [[gallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 1)
         sut.viewDidLoad()
         XCTAssertEqual(sut.imagesGalleries[0].count, 1)
     }
     
     func test_viewDidLoad_withFourGalleryInDefaults_imagesGalleriesShouldHaveCount4() {
-        let gallery = ImageGallery()
-        defaults.results = ["SavedGalleries": [[gallery, gallery, gallery, gallery]]]
+        createGalleries(in: defaults, numerOfSection: 1, galleriesInSection: 4)
         sut.viewDidLoad()
         XCTAssertEqual(sut.imagesGalleries[0].count, 4)
     }

@@ -24,6 +24,9 @@
 		383AEB5F2AB33D0600AA45D0 /* GalleriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */; };
 		3869A6A02AB1E1CB005E0BEB /* Extension+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */; };
 		389858AF2ABDA35B00372CD9 /* GarbageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389858AE2ABDA35B00372CD9 /* GarbageView.swift */; };
+		38B39C612B710E72002E975B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B39C602B710E72002E975B /* main.swift */; };
+		38B39C632B710FF1002E975B /* TestingAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B39C622B710FF1002E975B /* TestingAppDelegate.swift */; };
+		38B39C652B711075002E975B /* TestingSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B39C642B711075002E975B /* TestingSceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		383AEB5E2AB33D0600AA45D0 /* GalleriesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewController.swift; sourceTree = "<group>"; };
 		3869A69F2AB1E1CB005E0BEB /* Extension+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+URL.swift"; sourceTree = "<group>"; };
 		389858AE2ABDA35B00372CD9 /* GarbageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarbageView.swift; sourceTree = "<group>"; };
+		38B39C602B710E72002E975B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		38B39C622B710FF1002E975B /* TestingAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingAppDelegate.swift; sourceTree = "<group>"; };
+		38B39C642B711075002E975B /* TestingSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingSceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,8 @@
 				381285BE2B6EEB3800490983 /* TestHelpers.swift */,
 				381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */,
 				380DD2522B704BA500AD9E57 /* MockTableView.swift */,
+				38B39C622B710FF1002E975B /* TestingAppDelegate.swift */,
+				38B39C642B711075002E975B /* TestingSceneDelegate.swift */,
 			);
 			path = ImageGalleryTests;
 			sourceTree = "<group>";
@@ -121,6 +129,7 @@
 				38088C9D2AB08A8C00558570 /* ImageCollectionViewCell.swift */,
 				38088C9F2AB090C600558570 /* ImageGallery.swift */,
 				38088C922AB0869200558570 /* Info.plist */,
+				38B39C602B710E72002E975B /* main.swift */,
 			);
 			path = ImageGallery;
 			sourceTree = "<group>";
@@ -239,8 +248,10 @@
 				380254152B6867D800356240 /* GalleriesTableViewControllerTests.swift in Sources */,
 				380254172B686E0000356240 /* FakeUserDefaults.swift in Sources */,
 				381285C12B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift in Sources */,
+				38B39C632B710FF1002E975B /* TestingAppDelegate.swift in Sources */,
 				380DD2532B704BA500AD9E57 /* MockTableView.swift in Sources */,
 				381285BF2B6EEB3800490983 /* TestHelpers.swift in Sources */,
+				38B39C652B711075002E975B /* TestingSceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +266,7 @@
 				38088C852AB0869100558570 /* AppDelegate.swift in Sources */,
 				383AEB5D2AB3368700AA45D0 /* GallaryTableViewCell.swift in Sources */,
 				38088C9E2AB08A8C00558570 /* ImageCollectionViewCell.swift in Sources */,
+				38B39C612B710E72002E975B /* main.swift in Sources */,
 				38088CA22AB0A9A800558570 /* ImageViewController.swift in Sources */,
 				38088C872AB0869100558570 /* SceneDelegate.swift in Sources */,
 				383AEB5F2AB33D0600AA45D0 /* GalleriesTableViewController.swift in Sources */,

@@ -207,7 +207,7 @@
         <!--Split View Controller-->
         <scene sceneID="VF0-0M-HMA">
             <objects>
-                <splitViewController storyboardIdentifier="SplitC" allowDoubleColumnStyle="YES" primaryBackgroundStyle="sidebar" id="QLw-L9-iej" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="SplitViewController" allowDoubleColumnStyle="YES" primaryBackgroundStyle="sidebar" id="QLw-L9-iej" sceneMemberID="viewController">
                     <connections>
                         <segue destination="Tep-up-pc0" kind="relationship" relationship="masterViewController" id="aI9-Mn-BD6"/>
                         <segue destination="glq-mr-Svh" kind="relationship" relationship="detailViewController" id="y28-xz-h2R"/>

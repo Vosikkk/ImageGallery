@@ -19,7 +19,7 @@ class FakeUserDefaults: UserDefaultsProtocol {
         results[key] ?? []
     }
     
-    func sett(_ galleries: [[ImageGallery]], forKey key: String) {
+    func set(_ galleries: [[ImageGallery]], forKey key: String) {
         results[key] = galleries
     }
 }
