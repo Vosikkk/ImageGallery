@@ -40,14 +40,15 @@ func executeRunLoop() {
     RunLoop.current.run(until: Date())
 }
 
+func leadingSwipeActionsConfigurationForRow(in tableView: UITableView, row: Int, section: Int) -> UISwipeActionsConfiguration? {
+    tableView.delegate?.tableView?(tableView, leadingSwipeActionsConfigurationForRowAt: IndexPath(row: row, section: section))
+}
 
 
 func editingRow(in tableView: UITableView, commitForEdit: UITableViewCell.EditingStyle, row: Int = 0, section: Int = 0) {
     tableView.dataSource?.tableView?(tableView, commit: commitForEdit, forRowAt: IndexPath(row: row, section: section))
     
 }
-
-
 
 extension UITableViewCell {
     var textFromContext: String? {
@@ -60,4 +61,18 @@ func putInWindow(_ vc: UIViewController) {
     let window = UIWindow()
     window.rootViewController = vc
     window.isHidden = false
+}
+
+func tap(_ button: UIBarButtonItem) {
+    _ = button.target?.perform(button.action, with: nil)
+}
+
+func createGalleries(in storage: UserDefaultsProtocol, amount: Int, section: Int) {
+    var res: [ImageGallery] = []
+    for _ in 0..<amount {
+        let testGallery = ImageGallery()
+        res.append(testGallery)
+    }
+    
+    storage.sett([res], forKey: "SavedGalleries")
 }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol UserInteractionProtocol {
+    var isUserInteractionEnabled: Bool { get set }
+}
+
 
 protocol UserDefaultsProtocol {
     func galleries(forKey key: String) -> [[ImageGallery]]
@@ -245,7 +249,7 @@ class GalleriesTableViewController: UITableViewController {
     
     // MARK: - private functions
   
-    private func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
+    func selectRow(at indexPath: IndexPath, after timeDelay: TimeInterval = 0.0) {
         if tableView(self.tableView, numberOfRowsInSection: indexPath.section) > indexPath.row {
             Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { [weak self] timer in
                 self?.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
@@ -257,5 +261,6 @@ class GalleriesTableViewController: UITableViewController {
     private func galleryName(at indexPath: IndexPath) -> String {
         return imagesGalleries[indexPath.section][indexPath.row].name
     }
+    
   
 }

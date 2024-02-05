@@ -17,6 +17,7 @@
 		38088C9E2AB08A8C00558570 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C9D2AB08A8C00558570 /* ImageCollectionViewCell.swift */; };
 		38088CA02AB090C600558570 /* ImageGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088C9F2AB090C600558570 /* ImageGallery.swift */; };
 		38088CA22AB0A9A800558570 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38088CA12AB0A9A800558570 /* ImageViewController.swift */; };
+		380DD2532B704BA500AD9E57 /* MockTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380DD2522B704BA500AD9E57 /* MockTableView.swift */; };
 		381285BF2B6EEB3800490983 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381285BE2B6EEB3800490983 /* TestHelpers.swift */; };
 		381285C12B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */; };
 		383AEB5D2AB3368700AA45D0 /* GallaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */; };
@@ -49,6 +50,7 @@
 		38088C9D2AB08A8C00558570 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		38088C9F2AB090C600558570 /* ImageGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGallery.swift; sourceTree = "<group>"; };
 		38088CA12AB0A9A800558570 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		380DD2522B704BA500AD9E57 /* MockTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTableView.swift; sourceTree = "<group>"; };
 		381285BE2B6EEB3800490983 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleriesTableViewControllerTestsForTableView.swift; sourceTree = "<group>"; };
 		383AEB5C2AB3368700AA45D0 /* GallaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GallaryTableViewCell.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				380254162B686E0000356240 /* FakeUserDefaults.swift */,
 				381285BE2B6EEB3800490983 /* TestHelpers.swift */,
 				381285C02B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift */,
+				380DD2522B704BA500AD9E57 /* MockTableView.swift */,
 			);
 			path = ImageGalleryTests;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				380254152B6867D800356240 /* GalleriesTableViewControllerTests.swift in Sources */,
 				380254172B686E0000356240 /* FakeUserDefaults.swift in Sources */,
 				381285C12B6EF1AF00490983 /* GalleriesTableViewControllerTestsForTableView.swift in Sources */,
+				380DD2532B704BA500AD9E57 /* MockTableView.swift in Sources */,
 				381285BF2B6EEB3800490983 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -136,6 +136,53 @@ final class GalleriesTableViewControllerTests: XCTestCase {
         gallery.add(ImageModel(url: URL(string: "http://DUMMY")!, aspectRatio: 1), at: 0)
         
         XCTAssertEqual(sut.imagesGalleries[0].first?.images.count, 1)
+    }
+    
+    
+    func test_saveBarButtonItem_shouldBeSizeCount1AlsoResaveExistGalleryHasNameTestInImageGalleriesJSON() {
+        
+        sut.viewDidLoad()
+        
+        XCTAssertEqual(sut.imageGalleriesJSON.count, 0)
+        
+        guard let saveButton = sut.navigationItem.rightBarButtonItems?.last else {
+            XCTFail("Expected save button but there is no any button")
+            return
+        }
+        
+        tap(saveButton)
+       
+        XCTAssertEqual(sut.imageGalleriesJSON.count, 1, "Didn't save gallery into json data")
+        
+        XCTAssertEqual(sut.imageGalleriesJSON[0].first?.name, "Gallery one")
+        
+        sut.imagesGalleries[0].first?.name = "Test"
+        
+        XCTAssertEqual(sut.imagesGalleries[0].first?.name, "Test")
+        
+        tap(saveButton)
+        
+        XCTAssertEqual(sut.imageGalleriesJSON[0].first?.name, "Test")
         
     }
+    
+    func test_addNewGalleryBarButtonItem_shouldCreateNewGalleryWithNameNewGelleryAndImageGalleryStructureShouldHasCount2() {
+
+        sut.viewDidLoad()
+        
+        guard let addNewGalleryButton = sut.navigationItem.rightBarButtonItems?.first else {
+            XCTFail("Expected addNewGallery button but there is no any button")
+            return
+        }
+        
+        XCTAssertEqual(sut.imagesGalleries[0].count, 1)
+        
+        tap(addNewGalleryButton)
+        
+        XCTAssertEqual(sut.imagesGalleries[0].last?.name, "New Gallery")
+        XCTAssertEqual(sut.imagesGalleries[0].count, 2)
+        
+    }
+    
+    
 }

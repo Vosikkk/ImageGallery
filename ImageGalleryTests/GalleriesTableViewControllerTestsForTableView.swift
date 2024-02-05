@@ -143,7 +143,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
     }
     
     
-    func test_titleForHeaderInSection1_shouldBeRecentlyDeleted() {
+    func test_titleForHeader_shouldBeRecentlyDeletedInSection1AndNilInSection0() {
         
         XCTAssertEqual(titleHeader(in: sut.tableView), nil)
         
@@ -152,6 +152,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
         
         let header = titleHeader(in: sut.tableView, section: 1)
         
+        XCTAssertEqual(titleHeader(in: sut.tableView, section: 0), nil)
         XCTAssertEqual(header, "Recently deleted")
     }
     
@@ -165,7 +166,7 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
         defaults.results = ["SavedGalleries": [[testGallery]]]
         sut.viewDidLoad()
         
-        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondtion")
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondition")
     
         editingRow(in: sut.tableView, commitForEdit: .delete, section: 0)
         
@@ -178,14 +179,108 @@ final class GalleriesTableViewControllerTestsForTableView: XCTestCase {
         defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
         sut.viewDidLoad()
         
-        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondtion")
-        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondtion")
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondition")
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondition")
         
         editingRow(in: sut.tableView, commitForEdit: .delete, section: 0)
         
         XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 0)
         XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 2)
     }
+    
+    
+    func test_editingStyleDeleteRowFromSection1_shouldBe0RowInSection1() {
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        
+        sut.viewDidLoad()
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondition")
+        
+        editingRow(in: sut.tableView, commitForEdit: .delete, section: 1)
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 0)
+    }
+    
+    func test_leadingSwipeActionsConfigurationForRowAtSection1_shouldBeNotNilAndActionCount1() {
+        
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        sut.viewDidLoad()
+        
+        let configuration = leadingSwipeActionsConfigurationForRow(in: sut.tableView, row: 0, section: 1)
+        
+        XCTAssertNotNil(configuration)
+        
+        XCTAssertEqual(configuration?.actions.count, 1, "Should be 1 but \(String(describing: configuration?.actions.count))")
+        
+        
+        XCTAssertEqual(configuration?.actions.first?.title, "Undelete", "The title should be Undelete but \(String(describing: configuration?.actions.first?.title))")
+        
+        XCTAssertEqual(configuration?.actions.first?.backgroundColor, .blue)
+        
+    }
+    
+    
+    func test_leadingSwipeActionForRowAtSection1_shouldHaveSection1Row0Section0Rows2() {
+        
+        defaults.results = ["SavedGalleries": [[testGallery], [testGallery]]]
+        sut.viewDidLoad()
+        
+        let configuration = leadingSwipeActionsConfigurationForRow(in: sut.tableView, row: 0, section: 1)
+        
+        XCTAssertNotNil(configuration, "something wrong there is no \(String(describing: configuration))")
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 1, "precondition")
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 1, "precondition")
+        
+        let expectation = expectation(description: "Swipe action performed")
+        
+        configuration?.actions.first?.handler(configuration!.actions.first!, sut.tableView, { success in
+            XCTAssertTrue(success, "Handler should complete successfully")
+            expectation.fulfill()
+        })
+        
+        waitForExpectations(timeout: 0.1)
+        
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 1), 0)
+        XCTAssertEqual(numberOfRows(in: sut.tableView, section: 0), 2)
+    }
+    
+    func test_selectRow_shouldCallSelectRowTrueAndSelectedRow0Section0() {
+        
+        sut.viewDidLoad()
+        
+        let tableView = MockTableView()
+        sut.tableView = tableView
+        let expectation = XCTestExpectation(description: "Select Row Expectation")
+        let indexPath = IndexPath(row: 0, section: 0)
+        sut.selectRow(at: indexPath)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertTrue(tableView.didCallSelectRow)
+            XCTAssertEqual(tableView.selectedIndexPath, indexPath)
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+        
+    }
+    
+    func test_showCollection() {
+        
+        sut.viewDidLoad()
+        
+        
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        
+        sut.showCollection(at: indexPath)
+        
+        
+        
+        
+        
+    }
+    
     
 }
 
